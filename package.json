@@ -1,0 +1,17 @@
+{
+  "name": "electron_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "knex": "^0.10.0",
+    "pdfkit": "^0.7.2",
+    "sqlite": "0.0.4"
+  },
+  "author": "",
+  "license": "ISC"
+}
