@@ -4,9 +4,13 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-linux": "electron-packager . CSS --platform=linux --arch=all"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron-packager": "^5.2.1",
+    "electron-prebuilt": "^0.37.2"
+  },
   "dependencies": {
     "knex": "^0.10.0",
     "pdfkit": "^0.7.2",

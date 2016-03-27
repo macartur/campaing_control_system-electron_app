@@ -52,13 +52,6 @@ var menu_template = [
         ]
     }
 ];
+
 var menu = Menu.buildFromTemplate(menu_template);
 Menu.setApplicationMenu(menu);
-
-// DATABASE
-var knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: "./database.sqlite"
-  }
-});
