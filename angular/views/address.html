@@ -1,30 +1,40 @@
 
-
-
-<div ng-controller='addressCtrl'>
-	<form novalidate>
-					<div class="form-group">
-					<label>Task:</label>
-					<input class="form-control" type='text' name='task' placeholder="TASK TO DO" ng-model="task_name"/>
-<input ng-disabled="!task_name" type='submit' name='submit' value='Sent' ng-click='add_task()' class="btn btn-primary" />
-
-	</form>
-
- <!-- SHOW ALL APPS-->
-			<div class="panel panel-default">
-			   <div class="panel-heading"><center>ToDo List</center></div>
+<h1><center>Endereços <center> </h1>
+			<div class="panel panel-default" ng-controller="addressCtrl">
 			  <!-- Table -->
 			  <table class="table" >
+                <!--  HEAD FROM TABLE-->
 				<tr>
-					<th>#</th>
-					<th>Task Name</th>
+					<th style="width:5%"> # </th>
+                    <th style="width:5%">Salvar/Editar</th>
+					<th>Localização</th>
 				</tr>
-				<tr ng-show='!task.length' ng-repeat="task in tasks">
+
+                <!-- SHOW AND EDIT ADDRESS-->
+				<tr ng-show='addresses.length' ng-repeat="address in addresses">
+
 					<td>{{$index+1}}</td>
-					<td>{{task.name}}</td>
-                    <td ng-click='remove_task($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></td>
+
+                    <td> 
+                        <input ng-show="!is_selected($index)"  ng-click="edit_address($index)" type="submit" value="Editar" class="btn btn-default"/>
+                        <input ng-show="is_selected($index)" ng-click="update_address($index)" type="submit" value="Salvar" class="btn btn-success"  /></td>
+					<td>
+                    <div ng-show="!is_selected($index)">
+                        {{address.name}}
+                    </div>
+                    <div ng-show="is_selected($index)">
+                        <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="updated_location" />
+                    </div>
+                    <div ng-show="!is_selected($index)" ng-click='remove_address($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></div></td>
 				</tr>
+
+
+                <!-- SAVE NEW ADDRESS-->
+                <tr ng-show="mode === 'new'">
+                    <td> {{addresses.length+1}} </td>
+                        <td ><input ng-disabled="!address_location" type='submit' name='submit' value='Salvar' ng-click='add_address()' class="btn btn-success"/></td>
+                        <td> <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address_location"/></td>
+                </tr>
 			  </table>
 			</div>
-
 </div>

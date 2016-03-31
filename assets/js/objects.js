@@ -16,26 +16,20 @@ var knex = require('knex')({
 // tables name
 var tables = { 
     "Campaing": 'campaing',
-    "DateTime": 'date_time',
     "Address":  'address'
     }
 
 var create_tables = function(){
     console.log('CREATE TABLES')    
-
-    knex.schema.createTableIfNotExists(tables["Campaing"],function(table){
-        table.increments('id');
-        table.string('name');        
-    })
-    .createTableIfNotExists(tables["DateTime"], function(table){
-      table.increments('id');
-        table.date('start');
-        table.date('end');
-    })
+    knex.schema
     .createTableIfNotExists(tables['Address'],function(table){
         table.increments('id');
         table.string('name');
-        table.integer('campaing_id').unsigned().references('campaing.id');
+    })
+    .createTableIfNotExists(tables["Campaing"],function(table){
+        table.increments('id');
+        table.string('name');        
+        table.integer('address_id').unsigned().references('Address.id');
     })
     .catch(function(e){
         console.error(e);
@@ -49,6 +43,7 @@ var query_result = 0;
 var save_object = function(object){
     knex(tables[object.constructor.name]).insert(object)
     .catch(function(e){
+        console.error(e)
         query_result = -1; // ERROR INSERT 
      })
     query_result = 0;
@@ -74,10 +69,12 @@ var delete_object = function(object){
     query_result = 0;
 }
 
+
+
 // GET OBJECTS FROM OPTIONS
-var result;  // result from get_object
 var get_object = function(class_name, options = new Array())
 { 
+    var result; 
     if (tables[class_name] === undefined ) {
         query_result = 2 // NOT FOUND 
         return
@@ -93,25 +90,18 @@ var get_object = function(class_name, options = new Array())
         console.error(e)
     })
     query_result = 0; // SUCCESS
+    return result
 }
 
 // OBJECTS
-function Campaing(id, name, created_at, updated_at){
+function Campaing(id, name){
     this.id = id;
     this.name = name;
 }
 
-function Address(id, name, campaing_id){
+function Address(id, name){
     this.id = id;
     this.name = name;
-    this.campaing_id = campaing_id;
 }
-
-function DateTime(id, start, end){
-    this.id = id;
-    this.start = start;
-    this.end =  end;
-}
-
 
 // IMAGES FILES
