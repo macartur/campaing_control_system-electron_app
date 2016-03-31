@@ -12,6 +12,10 @@
     "electron-prebuilt": "^0.37.2"
   },
   "dependencies": {
+    "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.2",
     "knex": "^0.10.0",
     "pdfkit": "^0.7.2",
     "sqlite": "0.0.4"

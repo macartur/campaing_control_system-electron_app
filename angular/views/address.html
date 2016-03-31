@@ -1,0 +1,30 @@
+
+
+
+<div ng-controller='addressCtrl'>
+	<form novalidate>
+					<div class="form-group">
+					<label>Task:</label>
+					<input class="form-control" type='text' name='task' placeholder="TASK TO DO" ng-model="task_name"/>
+<input ng-disabled="!task_name" type='submit' name='submit' value='Sent' ng-click='add_task()' class="btn btn-primary" />
+
+	</form>
+
+ <!-- SHOW ALL APPS-->
+			<div class="panel panel-default">
+			   <div class="panel-heading"><center>ToDo List</center></div>
+			  <!-- Table -->
+			  <table class="table" >
+				<tr>
+					<th>#</th>
+					<th>Task Name</th>
+				</tr>
+				<tr ng-show='!task.length' ng-repeat="task in tasks">
+					<td>{{$index+1}}</td>
+					<td>{{task.name}}</td>
+                    <td ng-click='remove_task($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></td>
+				</tr>
+			  </table>
+			</div>
+
+</div>
