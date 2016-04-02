@@ -16,11 +16,13 @@ var knex = require('knex')({
 // tables name
 var tables = { 
     "Campaing": 'campaing',
-    "Address":  'address'
+    "Address":  'address',
+    "Image": 'image',
+    "CampaingAddress": 'campaing_address'
     }
 
 var create_tables = function(){
-    console.log('CREATE TABLES')    
+    console.log('CREATE TABLES')
     knex.schema
     .createTableIfNotExists(tables['Address'],function(table){
         table.increments('id');
@@ -28,8 +30,25 @@ var create_tables = function(){
     })
     .createTableIfNotExists(tables["Campaing"],function(table){
         table.increments('id');
-        table.string('name');        
+        table.string('name');
+        table.dateTime('start_time')
+        table.dateTime('end_time')
         table.integer('address_id').unsigned().references('Address.id');
+    })
+    .createTableIfNotExists(tables['Image'],function(table){
+        table.increments('id')
+        table.string('url')
+        table.integer('x')
+        table.integer('y')
+        table.integer('scale')
+    })
+    .createTableIfNotExists(tables['CampaingAddress'],function(table){
+        table.increments('id')
+        table.integer('start_image').unsigned().references('Image.id')
+        table.integer('end_image').unsigned().references('Image.id')
+        table.integer('campaing_id').unsigned().references('Campaing.id')
+        table.integer('address_id').unsigned().references('Address.id')
+        table.integer('monitor')
     })
     .catch(function(e){
         console.error(e);
@@ -48,8 +67,7 @@ var save_object = function(object){
      })
     query_result = 0;
 }
-
-// UPDATE OBJECT FROM ID
+// UPDATE OBJECT FROM ID 
 var update_object = function(object){
     knex(tables[object.constructor.name]).update(object).where({id: object.id}) 
     .catch(function(e){
@@ -69,11 +87,8 @@ var delete_object = function(object){
     query_result = 0;
 }
 
-
-
 // GET OBJECTS FROM OPTIONS
-var get_object = function(class_name, options = new Array())
-{ 
+var get_object = function(class_name, options = {}){ 
     var result; 
     if (tables[class_name] === undefined ) {
         query_result = 2 // NOT FOUND 
@@ -85,7 +100,8 @@ var get_object = function(class_name, options = new Array())
         var object = new window[class_name]();
         for (var attribute in row) object[attribute] = row[attribute]
         result.push(object)
-    }).catch(function(e){
+    })
+    .catch(function(e){
         query_result = -1; // ERROR MAP
         console.error(e)
     })
@@ -93,15 +109,33 @@ var get_object = function(class_name, options = new Array())
     return result
 }
 
+
 // OBJECTS
-function Campaing(id, name){
+function Campaing(id, name, start_time,end_time){
     this.id = id;
     this.name = name;
+    this.start_time = start_time
+    this.end_time = end_time
+}
+
+function CampaingAddress(id,campaing_id=0,address_id=0,start_image="",end_image="", monitor=0){
+    this.id = id;
+    this.start_image = start_image
+    this.end_image = end_image
+    this.campaing_id = campaing_id
+    this.address_id = address_id;
+    this.monitor = monitor;
 }
 
 function Address(id, name){
     this.id = id;
     this.name = name;
 }
-
 // IMAGES FILES
+function Image(id,url,x,y,scale){
+    this.id = id;
+    this.url = url;
+    this.x = x;
+    this.y = y;
+    this.scale = scale;
+}

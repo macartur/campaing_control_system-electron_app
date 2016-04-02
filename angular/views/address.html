@@ -1,6 +1,6 @@
 
 <h1><center>Endereços <center> </h1>
-			<div class="panel panel-default" ng-controller="addressCtrl">
+			<div class="panel panel-default" >
 			  <!-- Table -->
 			  <table class="table" >
                 <!--  HEAD FROM TABLE-->
@@ -13,7 +13,7 @@
                 <!-- SHOW AND EDIT ADDRESS-->
 				<tr ng-show='addresses.length' ng-repeat="address in addresses">
 
-					<td>{{$index+1}}</td>
+					<td>{{address.id}}</td>
 
                     <td> 
                         <input ng-show="!is_selected($index)"  ng-click="edit_address($index)" type="submit" value="Editar" class="btn btn-default"/>
@@ -23,7 +23,7 @@
                         {{address.name}}
                     </div>
                     <div ng-show="is_selected($index)">
-                        <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="updated_location" />
+                        <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address.name" />
                     </div>
                     <div ng-show="!is_selected($index)" ng-click='remove_address($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></div></td>
 				</tr>
@@ -31,7 +31,7 @@
 
                 <!-- SAVE NEW ADDRESS-->
                 <tr ng-show="mode === 'new'">
-                    <td> {{addresses.length+1}} </td>
+                        <td></td>
                         <td ><input ng-disabled="!address_location" type='submit' name='submit' value='Salvar' ng-click='add_address()' class="btn btn-success"/></td>
                         <td> <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address_location"/></td>
                 </tr>

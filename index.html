@@ -5,7 +5,6 @@
     <title>Hello World!</title>
     <!--Stylesheets-->
     <link rel='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.min.css' type='text/css' >
-
     <!-- LIBS-->
     <script>window.$ = window.jQuery = require('jquery');</script>
 
@@ -17,6 +16,14 @@
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="node_modules/angular-route/angular-route.min.js"></script>
     <script src='angular/app.js'></script>
+   
+    <!--ANGULAR CONTROLLERS -->
+    <script src='angular/controllers/address.js'></script>
+    <script src='angular/controllers/campaing.js'></script>
+    <!-- ANGULAR ROUTES -->
+    <script src='angular/routes.js'></script>
+
+
 </script>
   </head>
   <body ng-app='CCS'>  
@@ -47,6 +54,7 @@
             <li><a href="#">Editar Imagens</a></li>
           </ul>
         </li>
+        <li><a href="#/campaing">Campanha</a></li>
         <li><a href="#/address">Endereços</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->

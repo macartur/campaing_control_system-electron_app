@@ -1,0 +1,68 @@
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Nova Campanha</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Nova Campanha</h4>
+      </div>
+      <div class="modal-body">
+		<form novalidate class="simple-form">
+			Name: <input type="text" ng-model="campaing.name" /><br />
+  			Dia Inicial: <input type="date" ng-model="campaing.start_time">
+  			Dia Final:   <input type="date" ng-model="campaing.end_time">
+			<input type="submit" ng-click="add_campaing()" value="Salvar" />
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LISTAR OS ENDEREÇOS  E IMAGENS-->
+<h1>Campanha: </h1>
+  <form name="myForm">
+    <select name="repeatSelect" id="repeatSelect" ng-model="current_campaing.selected" ng-click="get_campaing_address()"  >
+      <option   ng-repeat="option in campaings" value="{{option.id}}">{{option.name}}</option>
+    </select>
+  </form>
+
+
+  <br>
+    <hr>
+    {{current_campaing}}
+  <hr>
+
+<h2>Endereços</h2>
+
+<div class="panel panel-default" ng-show="current_campaing.selected">
+  <table class="table" >
+	<tr>
+		<th style="width:5%"> # </th>
+        <th style="width:5%"> Selecionar</th>
+		<th>Localização</th>
+	</tr>
+	<tr ng-show='addresses.length' ng-repeat="address in addresses">
+		<td>{{address.id}}</td>
+        <td> <input type="checkbox" ng-click="update_address(address.id)"ng-checked="is_checked(address.id)">  </td>
+        <td> {{address.name}} - {{is_checked(address.id)}}</td>
+	</tr>
+  </table>
+</div>
+
+<hr>
+    CAMPAINGS
+    <br>
+    {{campaings}}
+<hr>
+    ADDRESSES
+    <br>
+    {{addresses}}
+<hr>
+    {{campaing_addresses}}
+<hr>
