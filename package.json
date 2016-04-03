@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-linux": "electron-packager . CSS --platform=linux --arch=all"
+    "build-linux": "electron-packager . CCS --platform=linux --arch=x64",
+	"build-win64": "electron-packager . CCS --platform=win32 --arch=x64"
   },
   "devDependencies": {
     "electron-packager": "^5.2.1",

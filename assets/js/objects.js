@@ -5,7 +5,7 @@ console.log('OBJECTS')
 var knex = require('knex')({
   dialect: 'sqlite3',
   connection: {
-    filename: "./db/database.sqlite"
+    filename: __dirname+"/db/database.sqlite"
   },
   useNullAsDefault: true,
   debug: true
@@ -37,6 +37,7 @@ var create_tables = function(){
     })
     .createTableIfNotExists(tables['Image'],function(table){
         table.increments('id')
+        table.string('name')
         table.string('url')
         table.integer('x')
         table.integer('y')
@@ -132,10 +133,52 @@ function Address(id, name){
     this.name = name;
 }
 // IMAGES FILES
-function Image(id,url,x,y,scale){
+
+// URL TO UPLOADS
+
+var upload_path = __dirname+'/uploads'
+
+function Image(id,name="",url="",x=0,y=0,scale=0){
     this.id = id;
+    this.name = name;
     this.url = url;
     this.x = x;
     this.y = y;
     this.scale = scale;
 }
+
+var fs = require('fs');
+
+var copy_file = function(sourceFile,targetFile){
+	fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+}
+
+var has_path = function(path){
+	fs.exists(path, function(exists) {
+		if (exists) {
+			console.log(exists)
+		}
+	});
+}
+
+var mkdirp  = require('mkdirp')
+var create_path = function(path){
+	if (!has_path(path)){
+		mkdirp(path)
+	}
+}
+
+var remove_path = function(path) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        remove_path(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+};
+

@@ -1,4 +1,5 @@
 // ROUTES
+//
 ccs.config(['$routeProvider','$locationProvider',
     function($routeProvider, $locationProvider){
         $routeProvider
@@ -12,5 +13,9 @@ ccs.config(['$routeProvider','$locationProvider',
         .when('/campaing',{
             templateUrl: 'angular/views/campaing.html', 
             controller: 'campaingCtrl'
+        })
+        .when('/images',{
+            templateUrl: 'angular/views/images.html',
+            controller: 'imagesCtrl'
         })
     }])
