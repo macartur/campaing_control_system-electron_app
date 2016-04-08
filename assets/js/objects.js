@@ -1,60 +1,89 @@
 'use strict'
 
-console.log('OBJECTS')
-// DATABASE CONFIGURATION
-var knex = require('knex')({
-  dialect: 'sqlite3',
-  connection: {
-    filename: __dirname+"/db/database.sqlite"
-  },
-  useNullAsDefault: true,
-  debug: true
-});
-
 /// CREATE TABLES
-
 // tables name
 var tables = { 
+    "City": 'city',
     "Campaing": 'campaing',
     "Address":  'address',
     "Image": 'image',
     "CampaingAddress": 'campaing_address'
     }
 
-var create_tables = function(){
-    console.log('CREATE TABLES')
-    knex.schema
-    .createTableIfNotExists(tables['Address'],function(table){
-        table.increments('id');
+// create a fs 
+var fs = require('fs');
+
+var data;
+// read from json file
+try {
+    data = fs.readFileSync(__dirname+"/database.json",'ascii')
+    data = JSON.parse(data)
+} catch (err){
+    console.error("There was an error opening the file:")
+    console.error(err)
+}
+
+var database = require('knex')(data)
+var Manager = require('knex-schema')
+var manager = new Manager(database) 
+
+var city_schema = {
+	tableName: tables['City'],
+	build: function(table){
+		table.increments('id').primary()
+		table.string('name')
+	}
+}
+
+var address_schema = {
+    tableName: tables["Address"],
+    build: function(table){
+        table.increments('id').primary()
+        table.string('name')
+		table.integer('city_id').unsigned().references('City.id')
+    }
+}
+
+var campaing_schema = {
+    tableName: tables['Campaing'], 
+    build: function(table){
+        table.increments('id').primary();
         table.string('name');
-    })
-    .createTableIfNotExists(tables["Campaing"],function(table){
-        table.increments('id');
-        table.string('name');
-        table.dateTime('start_time')
-        table.dateTime('end_time')
-        table.integer('address_id').unsigned().references('Address.id');
-    })
-    .createTableIfNotExists(tables['Image'],function(table){
-        table.increments('id')
+        table.dateTime('start_time');
+        table.dateTime('end_time');
+        table.integer('address_id').unsigned().references('Address.id')
+    }
+}
+var image_schema = {
+    tableName: tables['Image'],
+    build: function(table){
+        table.increments('id').primary();
         table.string('name')
         table.string('url')
         table.integer('x')
         table.integer('y')
         table.integer('scale')
-    })
-    .createTableIfNotExists(tables['CampaingAddress'],function(table){
-        table.increments('id')
+    }
+}
+
+var campaing_address_schema = {
+    tableName: tables['CampaingAddress'],
+    build: function(table){
+        table.increments('id').primary()
         table.integer('start_image').unsigned().references('Image.id')
         table.integer('end_image').unsigned().references('Image.id')
         table.integer('campaing_id').unsigned().references('Campaing.id')
         table.integer('address_id').unsigned().references('Address.id')
         table.integer('monitor')
-    })
-    .catch(function(e){
-        console.error(e);
-    })
+    }
 }
+
+manager.sync([city_schema,address_schema,campaing_schema,image_schema,campaing_address_schema])
+
+// create a connection
+console.log('OBJECTS')
+// DATABASE CONFIGURATION
+var knex = require('knex')(data);
 
 // result from any query
 var query_result = 0;
@@ -119,7 +148,7 @@ function Campaing(id, name, start_time,end_time){
     this.end_time = end_time
 }
 
-function CampaingAddress(id,campaing_id=0,address_id=0,start_image="",end_image="", monitor=0){
+function CampaingAddress(id,campaing_id=0,address_id=0,start_image=0,end_image=0, monitor=0){
     this.id = id;
     this.start_image = start_image
     this.end_image = end_image
@@ -128,15 +157,16 @@ function CampaingAddress(id,campaing_id=0,address_id=0,start_image="",end_image=
     this.monitor = monitor;
 }
 
-function Address(id, name){
+function City(id, name){
+	this.id = id;
+	this.name = name;
+}
+
+function Address(id, name, city_id = 0){
     this.id = id;
     this.name = name;
+	this.city_id = 0
 }
-// IMAGES FILES
-
-// URL TO UPLOADS
-
-var upload_path = __dirname+'/uploads'
 
 function Image(id,name="",url="",x=0,y=0,scale=0){
     this.id = id;
@@ -147,7 +177,13 @@ function Image(id,name="",url="",x=0,y=0,scale=0){
     this.scale = scale;
 }
 
-var fs = require('fs');
+// IMAGES FILES
+
+// URL TO UPLOADS
+
+var upload_path = __dirname+'/uploads'
+
+
 
 var copy_file = function(sourceFile,targetFile){
 	fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
@@ -181,4 +217,16 @@ var remove_path = function(path) {
     fs.rmdirSync(path);
   }
 };
+
+
+// get last id from array
+var last_id = function(array) {
+   var id = 0;
+   if (array.length > 0){
+	   for(var a in array){
+			if (array[a].id > id) id = array[a].id
+		}
+   }
+   return id+1;
+}
 

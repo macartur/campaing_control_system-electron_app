@@ -4,9 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build-linux": "electron-packager . CCS --platform=linux --arch=x64",
-	"build-win64": "electron-packager . CCS --platform=win32 --arch=x64"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "electron-packager": "^5.2.1",
@@ -16,10 +14,12 @@
     "angular": "^1.5.3",
     "angular-route": "^1.5.3",
     "bootstrap": "^3.3.6",
+    "cropper": "^2.3.0",
     "jquery": "^2.2.2",
     "knex": "^0.10.0",
-    "pdfkit": "^0.7.2",
-    "sqlite": "0.0.4"
+    "knex-schema": "^2.1.1",
+    "mysql": "^2.10.2",
+    "pdfkit": "^0.7.2"
   },
   "author": "",
   "license": "ISC"

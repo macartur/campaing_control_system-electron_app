@@ -27,6 +27,26 @@
 </div>
 
 
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#editar_image">EDITAR IMAGEM</button>
+
+
+
+<!--  EDITAR IMAGEM  -->
+<div id="editar_image" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editando Imagem</h4>
+      </div>
+      <div class="modal-body">
+          <div>
+            <canvas id="canvas_dashboard"></canvas>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- LISTAR OS ENDEREÇOS  E IMAGENS-->
 <h1>Editar Campanha: </h1>
@@ -56,9 +76,7 @@
         <td> <input type="checkbox" ng-click="update_address(address.id)"ng-checked="is_checked(address.id)">  </td>
         <td> {{address.name}} </td>
         <td>
-        <label for="{{address.id}}-start_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)">
-            Dia Inicial - {{ has_file(address.id,'start_image' )   }} 
-            </label>
+        <label for="{{address.id}}-start_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)"></label>
             <input  id="{{address.id}}-start_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
         </td>
         <td>

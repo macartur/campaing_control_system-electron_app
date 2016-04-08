@@ -1,0 +1,11 @@
+{
+  "dialect": "mysql",
+  "connection": {
+      "host": "127.0.0.1",
+      "user": "root",
+      "password": "macartur",
+      "database": "electron"
+  },
+  "useNullAsDefault": true,
+  "debug": true
+}

@@ -7,18 +7,29 @@ var campaing_addresses = get_object("CampaingAddress")
 console.log(campaing_addresses)
 
 var images = get_object('Image')
-console.log(images)
+console.log(images) 
+
 
 // controllers
 ccs.controller('campaingCtrl',['$scope', function($scope){
 	$scope.master = {}
+
 	$scope.campaings= campaings
     $scope.addresses = addresses
     $scope.campaing_addresses = campaing_addresses
     $scope.images = images
-    $scope.current_campaing = {id: null, addresses: [], start_time: null, end_time: null}
 
-    // add a new campaing
+    $scope.current_campaing = {id: null, name: "",addresses: [], start_time: null, end_time: null}
+
+
+    /*
+     *  CAMPAING AREA
+     *  
+     *
+     *
+     * */
+
+    // create new campaing
     $scope.add_campaing = function(){
         var new_campaing = new Campaing(last_id($scope.campaings),
                                         $scope.campaing.name,
@@ -29,17 +40,25 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         $scope.campaings.push(new_campaing)
     }
 
-    // get last id from array
-	var last_id = function(array){
-       var id = 0;
-       if (array.length > 0){
-		   for(a in array){
-				if (array[a].id > id) id = array[a].id
-			}
-       }
-	   return id+1;
-	}
+    // UPDATE CAMPAING FORM
+    $scope.update_campaing = function() {
+		// TODO: remove this and see if its working
+        $scope.get_campaing_address()     
+        for(var key in $scope.campaings)
+        {
+            campaing = $scope.campaings[key]
+            if( campaing.id == $scope.current_campaing.id)
+            {
+                $scope.current_campaing.start_time = new Date(campaing.start_time)
+                $scope.current_campaing.end_time = new Date(campaing.end_time)
+            }
+        }
+    }
 
+    /*
+     *  CAMPAING ADDRESS
+     *
+     * */
     // updated campaings addresses selected
     $scope.get_campaing_address = function(){
        campaing = $scope.current_campaing.id
@@ -48,9 +67,7 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
        for(var key in campaing_addresses)
        {
            if( campaing == campaing_addresses[key].campaing_id ) 
-           {
-            $scope.current_campaing.addresses.push(campaing_addresses[key])
-           }
+               $scope.current_campaing.addresses.push(campaing_addresses[key])
        }
     }
         
@@ -67,24 +84,8 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 
     // checkbox selection
     $scope.is_checked = function(id){
-        if (get_campaing_address(id)){
-            return true
-        }
+        if (get_campaing_address(id)) return true
        return false 
-    }
-
-    $scope.update_campaing = function(){
-		// TODO: remove this and see if its working
-        $scope.get_campaing_address()     
-        for(var key in $scope.campaings)
-        {
-            campaing = $scope.campaings[key]
-            if( campaing.id == $scope.current_campaing.id)
-            {
-                $scope.current_campaing.start_time = new Date(campaing.start_time)
-                $scope.current_campaing.end_time = new Date(campaing.end_time)
-            }
-        }
     }
 
     // update check box
@@ -104,8 +105,6 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         }else{
            var campaing_address = get_campaing_address(id) 
 		   // remove images associated
-
-			console.log("HERE")
 			console.log(campaing_address)
 			console.log(campaing_address.start_image)
 			console.log(campaing_address.end_image)
@@ -116,14 +115,17 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 			if (campaing_address.end_image){
 				delete_object(new Image(campaing_address.end_image))
 			}
-		   //
            var index = $scope.current_campaing.addresses.indexOf(campaing_address)
            $scope.current_campaing.addresses.splice(index, 1);
            delete_object(campaing_address)
-			// delete folder with images
-			delete_path_of_images($scope.current_campaing.id,id)
+		   // delete folder with images
+		   delete_path_of_images($scope.current_campaing.id,id)
         }
     }
+
+    /*
+     *  CAMPAING ADDRESS IMAGE
+     * */
 
     $scope.upload_image = function(element){
         // update campaing_address with a image
@@ -160,29 +162,14 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         }
     }
 
-    $scope.has_file = function(address_id, type)
-    {
-		var campaing_address = get_campaing_address(address_id)
-		console.log(type.includes('start_image'))
-		console.log(campaing_address)
-
-		if (campaing_address === null) return false
-		console.log(campaing_address)
-		if (type.includes('start_image') && 
-			campaing_address.start_image === "")
-			 return false
-		if (type.includes('end_image') && 
-			campaing_address.end_image === "")
-			 return false
-		return true
-    }
-
+    /*
+     * MANIPULATE THE IMAGES
+    */
     var create_path_of_images = function(campaing_id,address_id){
 		create_path(get_images_path(campaing_id,address_id))
 	}
 
-	var delete_path_of_images = function(campaing_id,address_id)
-	{
+	var delete_path_of_images = function(campaing_id,address_id){
 		remove_path(get_images_path(campaing_id,address_id))
 	}
 

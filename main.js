@@ -8,9 +8,10 @@ const BrowserWindow = require('browser-window');
 var mainWindow;
 
 app.on('ready',function(){
-    mainWindow = new BrowserWindow({width: 1200, height: 600});
+    mainWindow = new BrowserWindow({width: 1200, height: 600, title: "CCS"});
     mainWindow.loadURL('file://'+__dirname+'/index.html');
     mainWindow.webContents.openDevTools();
+    console.log(app.getName())
     mainWindow.setMenu(null)
     mainWindow.on('closed',function(){
         mainWindow = null;

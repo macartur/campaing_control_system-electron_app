@@ -1,21 +1,36 @@
 
-// update all objects
 var addresses = get_object("Address")
 console.log(addresses)
 
+var cities = get_object('City')
+console.log(cities)
+
 // controllers
 ccs.controller('addressCtrl',['$scope', function($scope){
+
+    /*
+        CITIES
+    */
+    $scope.cities = cities
+    $scope.current_city = {id: 0, name: 0}
+
+    $scope.add_city = function(){
+        var city = new City(last_id($scope.cities),$scope.city.name)
+        save_object(city)
+        $scope.cities.push(angular.copy(city))
+    }
+
+
+    /*
+        ADDRESSES
+    */
     $scope.mode = "new" 
     $scope.selected = -1;
     $scope.addresses = addresses 
 
+    // add address
     $scope.add_address = function(){
-       var id;
-       if ($scope.addresses.length === 0){
-           id = 1
-       }else{
-           id =  $scope.addresses[addresses.length-1].id+1
-       }
+       var id = last_id($scope.addresses);
        var new_address = new Address(id, $scope.address_location)
        save_object(new_address)
        $scope.address_location = ""
