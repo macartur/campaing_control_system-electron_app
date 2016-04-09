@@ -8,7 +8,6 @@ ccs.config(['$routeProvider','$locationProvider',
         }) 
         .when('/address',{
             templateUrl: 'angular/views/address.html', 
-            controller: 'addressCtrl'
         })
         .when('/campaing',{
             templateUrl: 'angular/views/campaing.html', 

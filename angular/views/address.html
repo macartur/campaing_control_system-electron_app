@@ -1,58 +1,78 @@
+<div ng-controller="cityCtrl">
+	<div id="new_city" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			
+			<h4 class="modal-title" ng-show="mode == 'new'">Nova Cidade</h4>
+			<h4 class="modal-title" ng-show="mode == 'edit'">Editar Cidade</h4>
+		  </div>
+		  <div class="modal-body">
+			<form novalidate class="simple-form">
+				<label for="city_name" >Nome: </label>
+				<input name='city_name' ng-model="city.name" type="text">
+				<button class="btn btn-default" ng-show="mode === 'new'" ng-click="add_city()"> Criar </button>
+				<button class="btn btn-default" ng-show="mode === 'edit'"ng-click="edit_city()"> Editar </button>
+			</form>
+		  </div>
+		</div>
+	  </div>
+	</div>
 
-<h1><center>Cidades</center></h1>
+	<div class='pull-left left-bar' >
+		<h1>Cidade</h1>
 
-<div>
-    Nova Cidade
-    <form>
-        <label for="city_name" >Nome: </label>
-        <input name='city_name' ng-model="city.name" type="text" >
-        <button class="btn btn-default" ng-click="add_city()"> Criar  </button>
-    </form>
-</div>
+		<div class="form-group">
+		  <label for="select_city">Cidade Selecionada:</label>
+		<select class="form-control" name="select_city" id="select_city" ng-model="selected" ng-click="select_city()">
+		  <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
+		</select>
+		</div>
 
-{{cities}}
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="new_city()">Nova</button>
 
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="update_city()">Editar</button>
 
+		<button type="button" class="btn btn-info btn-lg" ng-click="remove_city()">Remover </button>
 
-
-
-
-<h1><center>Endereços <center> </h1>
-			<div class="panel panel-default" >
-			  <!-- Table -->
-			  <table class="table" >
-                <!--  HEAD FROM TABLE-->
-				<tr>
-					<th style="width:5%"> # </th>
-                    <th style="width:5%">Salvar/Editar</th>
-					<th>Localização</th>
-				</tr>
-
-                <!-- SHOW AND EDIT ADDRESS-->
-				<tr ng-show='addresses.length' ng-repeat="address in addresses">
-
-					<td>{{address.id}}</td>
-
-                    <td> 
-                        <input ng-show="!is_selected($index)"  ng-click="edit_address($index)" type="submit" value="Editar" class="btn btn-default"/>
-                        <input ng-show="is_selected($index)" ng-click="update_address($index)" type="submit" value="Salvar" class="btn btn-success"  /></td>
-					<td>
-                    <div ng-show="!is_selected($index)">
-                        {{address.name}}
-                    </div>
-                    <div ng-show="is_selected($index)">
-                        <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address.name" />
-                    </div>
-                    <div ng-show="!is_selected($index)" ng-click='remove_address($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></div></td>
-				</tr>
+	</div> <!-- ENDS PULL_LEFT-->
+</div><!-- ENDS CONTROLLER CITY-->
 
 
-                <!-- SAVE NEW ADDRESS-->
-                <tr ng-show="mode === 'new'">
-                        <td></td>
-                        <td ><input ng-disabled="!address_location" type='submit' name='submit' value='Salvar' ng-click='add_address()' class="btn btn-success"/></td>
-                        <td> <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address_location"/></td>
-                </tr>
-			  </table>
-			</div>
-</div>
+<div class='pull-right right-bar' ng-controller="addressCtrl">
+
+        <h1>Endereços </h1>
+
+                <div class="panel panel-default" >
+                  <table class="table" >
+                    <tr>
+                        <th style="width:5%"> # </th>
+                        <th style="width:5%">Salvar/Editar</th>
+                        <th>Localização</th>
+                    </tr>
+                    <tr ng-show='selected_addresses.length > 0' ng-repeat="address in selected_addresses">
+                        <td>{{address.id}}</td>
+
+                        <td> 
+                            <input ng-show="!is_selected($index)"  ng-click="edit_address($index)" type="submit" value="Editar" class="btn btn-default"/>
+                            <input ng-show="is_selected($index)" ng-click="update_address($index)" type="submit" value="Salvar" class="btn btn-success"  /></td>
+                        <td>
+                        <div ng-show="!is_selected($index)">
+                            {{address.name}}
+                        </div>
+                        <div ng-show="is_selected($index)">
+                            <input class="form-control" type='text' name='address' placeholder="Localização" ng-model="address.name" />
+                        </div>
+                        <div ng-show="!is_selected($index)" ng-click='remove_address($index)' class="pull-right glyphicon glyphicon-remove" aria-hidden="true"></div></td>
+                    </tr>
+                    <!-- SAVE NEW ADDRESS-->
+                    <tr ng-show="mode === 'new'">
+                            <td></td>
+                            <td ><input ng-disabled="!address_location" type='submit' name='submit' value='Salvar' ng-click='add_address()' class="btn btn-success"/></td>
+                            <td> <input ng-disabled="!city_selected" class="form-control" type='text' name='address' placeholder="Localização" ng-model="address_location"/></td>
+                    </tr>
+                  </table>
+                </div>
+    </div>
+</div><!-- ENDS PULL-RIGHT-->

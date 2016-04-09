@@ -1,0 +1,11 @@
+.left-bar {
+    width: 30%;
+    height: 100%;
+}
+.right-bar {
+    width: 70%;
+}
+body {
+    margin: 0px;
+    padding: 0px;
+}

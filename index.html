@@ -6,9 +6,14 @@
     <!--Stylesheets-->
     <link rel='stylesheet' href='node_modules/bootstrap/dist/css/bootstrap.min.css' type='text/css' >
     <link rel='stylesheet' href='assets/css/canvas.css' type='text/css' >
+    <link rel='stylesheet' href='assets/css/campaing_table.css' type='text/css' >
+    <link rel='stylesheet' href='assets/css/leftbar.css' type='text/css' >
+    <!--JCROP STYLE-->
+    <link rel='stylesheet' href='node_modules/jquery-jcrop/css/jquery.Jcrop.min.css' type='text/css' >
     <!-- LIBS-->
     <script>window.$ = window.jQuery = require('jquery');</script>
-
+    <!-- JCROP LIB-->
+    <script src='node_modules/jquery-jcrop/js/jquery.Jcrop.min.js'></script>
     <!-- Classes and functions  -->
     <script src='assets/js/test.js'></script>
     <script src='assets/js/objects.js'></script>
@@ -20,6 +25,7 @@
    
     <!--ANGULAR CONTROLLERS -->
     <script src='angular/controllers/images.js'></script>
+    <script src='angular/controllers/city.js'></script>
     <script src='angular/controllers/address.js'></script>
     <script src='angular/controllers/campaing.js'></script>
     <!-- ANGULAR ROUTES -->
@@ -45,18 +51,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Arquivo<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#/address">Nova Campanha</a></li>
-            <li><a href="#/address">Pré Visualizar</a></li>
-            <li><a href="#">Gerar PDF</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#/images">Editar Imagens</a></li>
-          </ul>
-        </li>
         <li><a href="#/campaing">Campanhas</a></li>
-        <li><a href="#/address">Endereços</a></li>
+        <li><a href="#/address">Cidades</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

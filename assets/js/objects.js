@@ -49,9 +49,8 @@ var campaing_schema = {
     build: function(table){
         table.increments('id').primary();
         table.string('name');
-        table.dateTime('start_time');
-        table.dateTime('end_time');
-        table.integer('address_id').unsigned().references('Address.id')
+        table.date('start_time');
+        table.date('end_time');
     }
 }
 var image_schema = {
@@ -62,7 +61,8 @@ var image_schema = {
         table.string('url')
         table.integer('x')
         table.integer('y')
-        table.integer('scale')
+        table.integer('w')
+        table.integer('h')
     }
 }
 
@@ -78,7 +78,11 @@ var campaing_address_schema = {
     }
 }
 
-manager.sync([city_schema,address_schema,campaing_schema,image_schema,campaing_address_schema])
+manager.sync([city_schema])
+manager.sync([address_schema])
+manager.sync([campaing_schema])
+manager.sync([campaing_address_schema])
+manager.sync([image_schema])
 
 // create a connection
 console.log('OBJECTS')
@@ -141,7 +145,7 @@ var get_object = function(class_name, options = {}){
 
 
 // OBJECTS
-function Campaing(id, name, start_time,end_time){
+function Campaing(id, name, start_time = new Date(),end_time = new Date()){
     this.id = id;
     this.name = name;
     this.start_time = start_time
@@ -165,25 +169,23 @@ function City(id, name){
 function Address(id, name, city_id = 0){
     this.id = id;
     this.name = name;
-	this.city_id = 0
+	this.city_id = city_id
 }
 
-function Image(id,name="",url="",x=0,y=0,scale=0){
+function Image(id,name="",url="",x=0,y=0,w=0,h=0){
     this.id = id;
     this.name = name;
     this.url = url;
     this.x = x;
     this.y = y;
-    this.scale = scale;
+    this.w = w;
+    this.h = h;
 }
 
 // IMAGES FILES
 
 // URL TO UPLOADS
-
 var upload_path = __dirname+'/uploads'
-
-
 
 var copy_file = function(sourceFile,targetFile){
 	fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
@@ -230,3 +232,39 @@ var last_id = function(array) {
    return id+1;
 }
 
+var delete_from_array = function(array,element_id)
+{
+	if (array.length > 0)
+		for(var key in array)
+		{
+			if(array[key].id == element_id)
+			array.splice(key,1)
+		}
+}
+
+var onChangeJcrop = function(c){
+   $('#x').val(c.x) 
+   $('#y').val(c.y) 
+   $('#w').val(c.w) 
+   $('#h').val(c.h) 
+   console.log("changed")
+}
+
+var get_image_coords = function(){
+    return {
+        x: $('#x').val(),
+        y: $('#y').val(),
+        w: $('#w').val(),
+        h: $('#h').val(),
+    }
+}
+
+var edit_image_target = function(){
+		$("#image_target").Jcrop({
+        bgColor:     'black',
+        bgOpacity:   .4,
+        onChange: onChangeJcrop,
+        onSelect: onChangeJcrop,
+        setSelect:   [ 100,100,50,50 ],
+        aspectRatio: 16/9})
+}

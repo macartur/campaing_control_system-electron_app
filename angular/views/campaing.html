@@ -1,90 +1,108 @@
+<div class='pull-left'>
 
-
-<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Nova Campanha</button>
-
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="campaing_modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Nova Campanha</h4>
+        <h4 class="modal-title" ng-show="mode === 'new'">Nova Campanha</h4>
+        <h4 class="modal-title" ng-show="mode === 'edit'">Editar Campanha</h4>
       </div>
       <div class="modal-body">
 		<form novalidate class="simple-form">
 			Name: <input type="text" ng-model="campaing.name" /><br />
   			Dia Inicial: <input type="date" ng-model="campaing.start_time">
   			Dia Final:   <input type="date" ng-model="campaing.end_time">
-			<input type="submit" ng-click="add_campaing()" value="Salvar" />
+			<input type="submit" ng-show="mode === 'new'" ng-click="register_campaing()" value="Salvar" />
+            <input type="submit" ng-show="mode === 'edit'" ng-click="update_campaing()">
 		</form>
       </div>
     </div>
   </div>
 </div>
 
+<div>
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#editar_image">EDITAR IMAGEM</button>
+    <h1>Campanha</h1>
+
+    <select class="form-control" name="campaing_selected" id="campaing_selected" ng-disabled="!campaings.length" ng-model="campaing_selected.id" ng-click="select_campaing()"  >
+      <option   ng-repeat="option in campaings" value="{{option.id}}">{{option.name}}</option>
+    </select>
+</div>
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#campaing_modal" ng-click="new_campaing()">Nova</button>
+
+<button type="button" class="btn btn-info btn-lg" ng-disabled="!campaing_selected.campaing" data-toggle="modal" data-target="#campaing_modal" ng-click="edit_campaing()">Editar</button>
+
+<button type="button" ng-disabled="!campaing_selected.campaing"class="btn btn-info btn-lg" ng-click="remove_campaing()">Remover</button>
+
+
+    <h1><center>Cidade<center></h1>
+
+    <select class="form-control" name="city_selected" id="city_selected" ng-disabled="!cities.length" ng-model="city_selected" ng-click="select_city()" >
+      <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
+    </select>
+
+</div>
 
 
 
-<!--  EDITAR IMAGEM  -->
-<div id="editar_image" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+
+<!--   SELECTED ADDRESSES   -->
+
+<div class="pull-left campaing_addresses_table">
+	<h1><center>Endereço:</center></h1>
+	  <table class="table" >
+		<tr>
+			<th> # </th>
+			<th> Selecionar</th>
+			<th>Localização</th>
+			<th>Foto Inicial</th>
+			<th>Foto Final</th>
+		</tr>
+		<tr ng-show="addresses_from_city.length > 0" ng-repeat="address in addresses_from_city">
+			<td> {{address.id}} </td>
+        	<td> <input type="checkbox" ng-click="select_address(address.id)"ng-checked="is_checked(address.id)">  </td>
+			<td> {{address.name}} </td>
+			<td> 
+
+                    <!--subir image-->
+					<label for="{{address.id}}-start_image" class="glyphicon glyphicon-file" ng-show="is_checked(address.id)"></label>
+					<input  id="{{address.id}}-start_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
+
+                    <!--editar image-->
+					<label for="{{address.id}}-image-start_image" class="glyphicon glyphicon-edit"></label>
+					<button id="{{address.id}}-image-start_image" class="hidden" data-toggle="modal" data-target="#edit_image" ng-click="edit_image(address.id, 'start_image')"></button>
+
+                    <!--remover image-->
+					<label for="{{address.id}}-image-start_image" class="glyphicon glyphicon-trash"></label>
+                    <input id="{{address.id}}-image-start_image" class="hidden" >
+			</td>
+			<td>
+					<label for="{{address.id}}-end_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)"></label>
+					<input  id="{{address.id}}-end_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="edit_image" class="modal fade" role="dialog">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Editando Imagem</h4>
+        <h4 class="modal-title" > Editando Imagem</h4>
       </div>
       <div class="modal-body">
-          <div>
-            <canvas id="canvas_dashboard"></canvas>
-          </div>
+          <center><img id="image_target" src=""></center>
+        <div class="hidden">
+        <input type="text" value="0" id="x">
+        <input type="text" value="0" id="y">
+        <input type="text" value="0" id="w">
+        <input type="text" value="0" id="h">
+        </div>
+        <button ng-click="save_image()"> salvar </button>
       </div>
     </div>
   </div>
-</div>
-
-<!-- LISTAR OS ENDEREÇOS  E IMAGENS-->
-<h1>Editar Campanha: </h1>
-
-  <form name="myForm">
-      Nome:
-    <select name="repeatSelect" id="repeatSelect" ng-model="current_campaing.id" ng-click="update_campaing()"  >
-      <option   ng-repeat="option in campaings" value="{{option.id}}">{{option.name}}</option>
-    </select>
-        Dia Inicial: <input type="date" ng-model="current_campaing.start_time">
-        Dia Final:   <input type="date" ng-model="current_campaing.end_time">
-  </form>
-
-<h2>Endereços</h2>
-
-<div class="panel panel-default" ng-show="current_campaing.id">
-  <table class="table" >
-	<tr>
-		<th style="width:5%"> # </th>
-        <th style="width:5%"> Selecionar</th>
-		<th>Localização</th>
-        <th>Dia Inicial </th>
-        <th>Dia Final </th>
-	</tr>
-	<tr ng-show='addresses.length' ng-repeat="address in addresses">
-		<td>{{address.id}}</td>
-        <td> <input type="checkbox" ng-click="update_address(address.id)"ng-checked="is_checked(address.id)">  </td>
-        <td> {{address.name}} </td>
-        <td>
-        <label for="{{address.id}}-start_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)"></label>
-            <input  id="{{address.id}}-start_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
-        </td>
-        <td>
-        <label for="{{address.id}}-end_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)" >
-            Dia Final 
-            </label>
-            <input  id="{{address.id}}-end_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)"/>
-        </td>
-	</tr>
-  </table>
 </div>
