@@ -29,4 +29,3 @@ var draw_canvas = function() {
 
       savePDF(newimgData);
 }
-

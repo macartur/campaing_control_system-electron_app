@@ -43,6 +43,8 @@
       <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
     </select>
 
+<button type="button" class="btn btn-info btn-lg" ng-click="gerar_pdf()">Gerar PDF</button>
+
 </div>
 
 
@@ -65,22 +67,31 @@
         	<td> <input type="checkbox" ng-click="select_address(address.id)"ng-checked="is_checked(address.id)">  </td>
 			<td> {{address.name}} </td>
 			<td> 
-
                     <!--subir image-->
-					<label for="{{address.id}}-start_image" class="glyphicon glyphicon-file" ng-show="is_checked(address.id)"></label>
+					<label for="{{address.id}}-start_image" class="glyphicon glyphicon-file upload-{{address.id}}-start_image" ng-show=" is_checked(address.id) && !has_image(address.id, 'start_image')"></label>
 					<input  id="{{address.id}}-start_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
 
                     <!--editar image-->
-					<label for="{{address.id}}-image-start_image" class="glyphicon glyphicon-edit"></label>
-					<button id="{{address.id}}-image-start_image" class="hidden" data-toggle="modal" data-target="#edit_image" ng-click="edit_image(address.id, 'start_image')"></button>
+					<label for="edit-{{address.id}}-start_image" class="glyphicon glyphicon-edit edit-{{address.id}}-start_image " ng-show="has_image(address.id,'start_image')"></label>
+					<input id="edit-{{address.id}}-start_image" class="hidden" data-toggle="modal" data-target="#edit_image" ng-click="edit_image(address.id, 'start_image')">
 
                     <!--remover image-->
-					<label for="{{address.id}}-image-start_image" class="glyphicon glyphicon-trash"></label>
-                    <input id="{{address.id}}-image-start_image" class="hidden" >
+					<label for="remove-{{address.id}}-start_image" class="glyphicon glyphicon-trash remove-{{address.id}}-start_image " ng-show="has_image(address.id,'start_image')"></label>
+                    <input id="remove-{{address.id}}-start_image" class="hidden" ng-click="remove_image(address.id,'start_image')">
 			</td>
 			<td>
-					<label for="{{address.id}}-end_image" class="custom-file-upload glyphicon glyphicon-folder-open" ng-show="is_checked(address.id)"></label>
+                    <!--subir image-->
+					<label for="{{address.id}}-end_image" class="glyphicon glyphicon-file upload-{{address.id}}-end_image" ng-show=" is_checked(address.id) && !has_image(address.id, 'end_image')"></label>
 					<input  id="{{address.id}}-end_image" class='hidden' type="file" onchange="angular.element(this).scope().upload_image(this)" />
+
+                    <!--editar image-->
+					<label for="edit-{{address.id}}-end_image" class="glyphicon glyphicon-edit edit-{{address.id}}-end_image " ng-show="has_image(address.id,'end_image')"></label>
+					<input id="edit-{{address.id}}-end_image" class="hidden" data-toggle="modal" data-target="#edit_image" ng-click="edit_image(address.id, 'end_image')">
+
+                    <!--remover image-->
+					<label for="remove-{{address.id}}-end_image" class="glyphicon glyphicon-trash remove-{{address.id}}-end_image " ng-show="has_image(address.id,'end_image')"></label>
+                    <input id="remove-{{address.id}}-end_image" class="hidden" ng-click="remove_image(address.id,'end_image')">
+
 			</td>
 		</tr>
 	</table>
@@ -93,8 +104,11 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title" > Editando Imagem</h4>
       </div>
-      <div class="modal-body">
-          <center><img id="image_target" src=""></center>
+      <div class="modal-body" >
+        <center>
+			<div class="canvas_image">
+			</div>
+		</center>
         <div class="hidden">
         <input type="text" value="0" id="x">
         <input type="text" value="0" id="y">
@@ -106,3 +120,4 @@
     </div>
   </div>
 </div>
+<canvas width="{{image_box.w}}" height="{{image_box.h}}" ng-class="hidden">CANVAS</canvas>

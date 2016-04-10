@@ -6,7 +6,7 @@ var tables = {
     "City": 'city',
     "Campaing": 'campaing',
     "Address":  'address',
-    "Image": 'image',
+    "ImageClass": 'image',
     "CampaingAddress": 'campaing_address'
     }
 
@@ -54,7 +54,7 @@ var campaing_schema = {
     }
 }
 var image_schema = {
-    tableName: tables['Image'],
+    tableName: tables['ImageClass'],
     build: function(table){
         table.increments('id').primary();
         table.string('name')
@@ -70,10 +70,11 @@ var campaing_address_schema = {
     tableName: tables['CampaingAddress'],
     build: function(table){
         table.increments('id').primary()
-        table.integer('start_image').unsigned().references('Image.id')
-        table.integer('end_image').unsigned().references('Image.id')
+        table.integer('start_image').unsigned().references('ImageClass.id')
+        table.integer('end_image').unsigned().references('ImageClass.id')
         table.integer('campaing_id').unsigned().references('Campaing.id')
         table.integer('address_id').unsigned().references('Address.id')
+        table.integer('city_id').unsigned().references('City.id')
         table.integer('monitor')
     }
 }
@@ -144,6 +145,17 @@ var get_object = function(class_name, options = {}){
 }
 
 
+var query_to_pdf = function(campaing_id,callback){
+    var sql =
+    "SELECT city.name AS city, address.id AS address_id, address.name AS address,campaing_address.monitor FROM campaing_address JOIN city ON campaing_address.city_id=city.id JOIN address ON campaing_address.address_id=address.id WHERE campaing_address.campaing_id="+campaing_id+" ORDER BY city.name ASC, address.name ASC;"
+//    "SELECT city.name AS city, address.name AS address,campaing_address.monitor AS monitor FROM campaing_address JOIN city ON campaing_address.city_id=city.id JOIN address ON campaing_address.address_id=address.id WHERE campaing_address.campaing_id="+campaing_id+" ORDER BY city.name ASC, address.name ASC;"
+    knex.raw(sql)
+    .then(function(e){
+        callback(e)
+    })
+}
+
+
 // OBJECTS
 function Campaing(id, name, start_time = new Date(),end_time = new Date()){
     this.id = id;
@@ -152,12 +164,13 @@ function Campaing(id, name, start_time = new Date(),end_time = new Date()){
     this.end_time = end_time
 }
 
-function CampaingAddress(id,campaing_id=0,address_id=0,start_image=0,end_image=0, monitor=0){
+function CampaingAddress(id,campaing_id=0,address_id=0,city_id=0,start_image=0,end_image=0, monitor=0){
     this.id = id;
     this.start_image = start_image
     this.end_image = end_image
     this.campaing_id = campaing_id
     this.address_id = address_id;
+    this.city_id = city_id 
     this.monitor = monitor;
 }
 
@@ -172,7 +185,7 @@ function Address(id, name, city_id = 0){
 	this.city_id = city_id
 }
 
-function Image(id,name="",url="",x=0,y=0,w=0,h=0){
+function ImageClass(id,name="",url="",x=0,y=0,w=200,h=200){
     this.id = id;
     this.name = name;
     this.url = url;
@@ -187,8 +200,13 @@ function Image(id,name="",url="",x=0,y=0,w=0,h=0){
 // URL TO UPLOADS
 var upload_path = __dirname+'/uploads'
 
-var copy_file = function(sourceFile,targetFile){
+var copy_file = function(sourceFile,targetFile, callback= undefined){
+    console.log('copy_file')
 	fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+    if (callback){
+        console.log('running callback')
+        callback()
+    }
 }
 
 var has_path = function(path){
@@ -259,12 +277,13 @@ var get_image_coords = function(){
     }
 }
 
-var edit_image_target = function(){
+var edit_image_target = function(crop_select){
+        var canvas = $('canvas')[0]
 		$("#image_target").Jcrop({
         bgColor:     'black',
         bgOpacity:   .4,
         onChange: onChangeJcrop,
         onSelect: onChangeJcrop,
-        setSelect:   [ 100,100,50,50 ],
+        setSelect:   [0,0,canvas.width,canvas.height],
         aspectRatio: 16/9})
 }
