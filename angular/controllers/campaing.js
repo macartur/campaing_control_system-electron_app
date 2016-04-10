@@ -78,6 +78,20 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 		return array
 	}
 
+
+	$scope.monitor = {campaing_address: {}}
+    $scope.update_monitor  = function(address_id){
+		$scope.monitor.campaing_address = get_campaing_address(address_id)
+    }
+
+	$scope.save_monitor = function(){
+       update_object(angular.copy($scope.monitor.campaing_address))
+	}
+
+    $scope.monitor_number = function(address_id){
+		return get_campaing_address(address_id).monitor
+	}
+
     var get_campaing_address = function( address_id){
         for(var key in $scope.campaing_addresses_selected ) {
 			if($scope.campaing_addresses_selected[key].campaing_id == $scope.campaing_selected.id &&

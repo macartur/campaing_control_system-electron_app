@@ -1,7 +1,4 @@
 ccs.controller('addressCtrl',['$scope', function($scope){
-    /*
-        ADDRESSES
-    */
     $scope.mode = "new" 
     $scope.selected = -1;
     $scope.addresses = addresses 
@@ -11,8 +8,6 @@ ccs.controller('addressCtrl',['$scope', function($scope){
 
 	// update city selected from cityCtrl
 	$scope.$on('city_selected',function(evt, city){
-        console.log('selected = ')
-        console.log(city)
         if (city)
         {
             $scope.city_selected = city
@@ -23,8 +18,7 @@ ccs.controller('addressCtrl',['$scope', function($scope){
     var get_addresses_from_city = function(id)
     {
         var result = []
-        for(var key in $scope.addresses)        
-        {
+        for(var key in $scope.addresses) {
             if ($scope.addresses[key].city_id == id) result.push($scope.addresses[key]) 
         }
         return result

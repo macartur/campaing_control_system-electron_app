@@ -48,8 +48,6 @@
 </div>
 
 
-
-
 <!--   SELECTED ADDRESSES   -->
 
 <div class="pull-left campaing_addresses_table">
@@ -59,6 +57,7 @@
 			<th> # </th>
 			<th> Selecionar</th>
 			<th>Localização</th>
+            <th> Monitor </th>
 			<th>Foto Inicial</th>
 			<th>Foto Final</th>
 		</tr>
@@ -66,6 +65,11 @@
 			<td> {{address.id}} </td>
         	<td> <input type="checkbox" ng-click="select_address(address.id)"ng-checked="is_checked(address.id)">  </td>
 			<td> {{address.name}} </td>
+            <td>
+                <label for="monitor-{{address.id}}-start_image" class="glyphicon glyphicon-blackboard" ng-show="is_checked(address.id)"></label>
+					<input  type="submit" id="monitor-{{address.id}}-start_image" ng-click="update_monitor(address.id)" class="hidden" data-toggle="modal" data-target="#update_monitor" ng-click="update_monitor(address.id)" />
+					{{monitor_number(address.id)}}
+            </td>
 			<td> 
                     <!--subir image-->
 					<label for="{{address.id}}-start_image" class="glyphicon glyphicon-file upload-{{address.id}}-start_image" ng-show=" is_checked(address.id) && !has_image(address.id, 'start_image')"></label>
@@ -121,3 +125,18 @@
   </div>
 </div>
 <canvas width="{{image_box.w}}" height="{{image_box.h}}" ng-class="hidden">CANVAS</canvas>
+<!--UPDATE MONITOr-->
+<div id="update_monitor" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" > Numero do Monitor</h4>
+      </div>
+      <div class="modal-body" >
+		Monitor: <input type="text"  ng-model="monitor.campaing_address.monitor">
+        <button ng-click="save_monitor()"> Salvar </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,8 +13,4 @@ ccs.config(['$routeProvider','$locationProvider',
             templateUrl: 'angular/views/campaing.html', 
             controller: 'campaingCtrl'
         })
-        .when('/images',{
-            templateUrl: 'angular/views/images.html',
-            controller: 'imagesCtrl'
-        })
     }])

@@ -39,11 +39,11 @@ ccs.controller('cityCtrl',['$rootScope','$scope', function($rootScope,$scope){
         if(! confirm("Tem certeza que deseja remover a Cidade \""+
            $scope.city.name+"\" e seus Endereços?")) return 
 
-		if (! $scope.city) {
+        if (! $scope.city) {
 		  $scope.city = get_city($scope.selected)
 		}
 		var index = $scope.cities.indexOf($scope.city)
-		if (index > 0) {
+        if (index > 0) {
 			$scope.cities.splice(index,1)
 			delete_object(angular.copy($scope.city))
 			$scope.city = $scope.master
