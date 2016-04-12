@@ -277,9 +277,13 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         create_file_from_canvas(image.url,coords)
     }
 
-    $scope.gerar_pdf = function(){
+    $scope.get_directory = function(){
+        open_directory(gerar_pdf)
+    }
 
-        var path= "mypdf.pdf"
+    var gerar_pdf = function(dir){
+		if (dir === undefined ) return
+        var path= dir
         var size = 'A4'
         var doc = create_pdf(path,size);
 
@@ -301,18 +305,23 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 
                 // data inicial
                 var data_inicial = $scope.campaing_selected.campaing.start_time 
-				var dateString = data_inicial.getUTCDate() + "/" +
-				  				 data_inicial.getUTCMonth()+1+"/"+
-								 data_inicial.getUTCFullYear()
-				var text = "Data Inicial: "+dateString
-			    doc.fontSize(12).text(text,200,170)
+                console.log(data_inicial)
 
-                var data_final = $scope.campaing_selected.campaing.start_time 
-				var dateString = data_final.getUTCDate() + "/" +
-				  				 data_final.getUTCMonth()+1+"/"+
-								 data_final.getUTCFullYear()
-				var text = "Data Inicial: "+dateString
-			    doc.fontSize(12).text(text,350,170)
+                console.log(data_inicial.getMonth())
+
+				var dateString1 = data_inicial.getDate() + "/" +
+                                 (data_inicial.getMonth()+1)+"/"+
+								  data_inicial.getFullYear()
+				var data1 = "Data Inicial: "+dateString1
+			    doc.fontSize(12).text(data1,200,170)
+
+                var data_final = $scope.campaing_selected.campaing.end_time
+                console.log(data_final)
+                var dateString2 = data_final.getDate() + "/" +
+                                 (data_final.getMonth()+1)+"/"+
+								  data_final.getFullYear()
+                var data2 = "Data Inicial: "+dateString2
+			    doc.fontSize(12).text(data2,350,170)
 
                 // logo 
                 doc.rect(2,2,590,80).stroke()
@@ -339,7 +348,7 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
             }
             doc.end();    
         })
-    }
+  }
 
     var create_file_from_canvas = function(path, default_crop)
     {

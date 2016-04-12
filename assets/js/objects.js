@@ -287,3 +287,8 @@ var edit_image_target = function(crop_select){
         setSelect:   [0,0,canvas.width,canvas.height],
         aspectRatio: 16/9})
 }
+
+const dialog = require('electron').remote.dialog;
+var open_directory = function(callback=undefined){
+    dialog.showSaveDialog({filters: [{name: 'pdf', extensions: ['pdf']}]}, callback);
+}
