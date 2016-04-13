@@ -1,4 +1,4 @@
-<div class='pull-left'>
+<div class='pull-left left-bar' >
 
 <div id="campaing_modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -43,14 +43,13 @@
       <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
     </select>
 
-<button type="button" class="btn btn-info btn-lg" ng-disabled="!campaing_selected.campaing" ng-click="get_directory()" >Gerar PDF</button>
+<button id="btn-pdf" type="button" class="btn btn-info btn-lg" ng-disabled="!campaing_selected.campaing" ng-click="get_directory()" >Gerar PDF</button>
 
 </div>
 
-
 <!--   SELECTED ADDRESSES   -->
 
-<div class="pull-left campaing_addresses_table">
+<div class="pull-left campaing_addresses_table right-bar">
 	<h1><center>Endereço:</center></h1>
 	  <table class="table" >
 		<tr>
@@ -124,7 +123,9 @@
     </div>
   </div>
 </div>
-<canvas width="{{image_box.w}}" height="{{image_box.h}}" ng-class="hidden">CANVAS</canvas>
+
+<canvas width="{{image_box.w}}" height="{{image_box.h}}" class="hidden">CANVAS</canvas>
+
 <!--UPDATE MONITOr-->
 <div id="update_monitor" class="modal fade" role="dialog">
   <div class="modal-dialog">

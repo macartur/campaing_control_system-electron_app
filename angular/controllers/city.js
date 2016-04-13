@@ -43,10 +43,12 @@ ccs.controller('cityCtrl',['$rootScope','$scope', function($rootScope,$scope){
 		  $scope.city = get_city($scope.selected)
 		}
 		var index = $scope.cities.indexOf($scope.city)
-        if (index > 0) {
+        if (index >= 0) {
 			$scope.cities.splice(index,1)
 			delete_object(angular.copy($scope.city))
 			$scope.city = $scope.master
 		}
+		$rootScope.$broadcast('city_selected', undefined)
+        $scope.selected = undefined
 	}
 }])

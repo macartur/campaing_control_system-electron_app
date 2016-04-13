@@ -13,6 +13,17 @@ ccs.controller('addressCtrl',['$scope', function($scope){
             $scope.city_selected = city
             $scope.selected_addresses = get_addresses_from_city(city.id)
         }
+        else
+        {
+            $scope.city_selected = undefined
+            if (!$scope.selected_addresses || $scope.selected_addresses.length == 0) return
+
+            for(var key in  $scope.selected_addresses){
+                console.log(key)
+                $scope.remove_address(key)
+            }
+            $scope.remove_address(0)
+        }
 	})
 
     var get_addresses_from_city = function(id)
@@ -34,6 +45,7 @@ ccs.controller('addressCtrl',['$scope', function($scope){
     }
 
     $scope.remove_address = function(index){
+       
        var address = $scope.selected_addresses[index]
        // delete from database
        delete_object(angular.copy(address))

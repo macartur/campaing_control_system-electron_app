@@ -114,6 +114,8 @@ var update_object = function(object){
 
 // DELETE OBJECT FROM ID
 var delete_object = function(object){
+    console.log(object)
+    console.log('= image =')
     knex(tables[object.constructor.name]).where({id: object.id}).del() 
     .catch(function(e){
         console.error(e)
@@ -148,7 +150,6 @@ var get_object = function(class_name, options = {}){
 var query_to_pdf = function(campaing_id,callback){
     var sql =
     "SELECT city.name AS city, address.id AS address_id, address.name AS address,campaing_address.monitor FROM campaing_address JOIN city ON campaing_address.city_id=city.id JOIN address ON campaing_address.address_id=address.id WHERE campaing_address.campaing_id="+campaing_id+" ORDER BY city.name ASC, address.name ASC;"
-//    "SELECT city.name AS city, address.name AS address,campaing_address.monitor AS monitor FROM campaing_address JOIN city ON campaing_address.city_id=city.id JOIN address ON campaing_address.address_id=address.id WHERE campaing_address.campaing_id="+campaing_id+" ORDER BY city.name ASC, address.name ASC;"
     knex.raw(sql)
     .then(function(e){
         callback(e)

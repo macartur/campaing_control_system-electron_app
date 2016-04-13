@@ -46,6 +46,26 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 
     $scope.remove_campaing = function(){
         var campaing = copy_campaing($scope.campaing_selected.campaing)
+        var address_index = []
+
+        for(var key in $scope.campaing_addresses)
+        {
+            console.log(key)
+            if ($scope.campaing_addresses[key].campaing_id == campaing.id){ 
+                address_index.push(key)
+                $scope.select_address($scope.campaing_addresses[key].address_id)
+            }
+        }
+
+        // bug the last campaig_address is not deleted
+        for(var key in $scope.campaing_addresses)
+        {
+            console.log(key)
+            if ($scope.campaing_addresses[key].campaing_id == campaing.id){ 
+                address_index.push(key)
+                $scope.select_address($scope.campaing_addresses[key].address_id)
+            }
+        }
 
         if(campaing === false) return
         delete_object(campaing)
@@ -55,7 +75,6 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         if(index >= 0) $scope.campaings.splice(index,1)
         $scope.campaing_selected = {id: -1, campaing: undefined}
     }
-
 
     // Addresses Manager
     $scope.addresses = addresses
@@ -84,7 +103,7 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 		$scope.monitor.campaing_address = get_campaing_address(address_id)
     }
 
-	$scope.save_monitor = function(){
+    $scope.save_monitor = function(){
        update_object(angular.copy($scope.monitor.campaing_address))
 	}
 
@@ -92,7 +111,7 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 		return get_campaing_address(address_id).monitor
 	}
 
-    var get_campaing_address = function( address_id){
+    var get_campaing_address = function(address_id){
         for(var key in $scope.campaing_addresses_selected ) {
 			if($scope.campaing_addresses_selected[key].campaing_id == $scope.campaing_selected.id &&
 			   $scope.campaing_addresses_selected[key].address_id == address_id)
@@ -119,13 +138,21 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 			$scope.campaing_addresses.push(angular.copy(campaing_address))
             create_path_of_images($scope.campaing_selected.id, address_id)
 		} else {
-			var campaing_address = get_campaing_address(address_id)
-			delete_from_array($scope.campaing_addresses_selected,campaing_address.id)
-			delete_from_array($scope.campaing_addresses,campaing_address.id)
-			delete_object(campaing_address)
-            delete_path_of_images($scope.campaing_selected.id, address_id)
+            $scope.remove_image(address_id,'start_image')
+            $scope.remove_image(address_id,'end_image')
+            delete_campaing_address(address_id)
 		}
 	}
+
+    var delete_campaing_address = function(address_id){
+			var campaing_address = get_campaing_address(address_id)
+            var start = campaing_address.start_image;
+            var end = campaing_address.end_image;
+			delete_from_array($scope.campaing_addresses_selected,campaing_address.id)
+			delete_from_array($scope.campaing_addresses,campaing_address.id)
+            delete_path_of_images($scope.campaing_selected.id, address_id)
+			delete_object(campaing_address)
+    }
 
     $scope.is_checked = function(address_id) {
 		return get_campaing_address(address_id);
@@ -140,10 +167,8 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
     }
 
     var get_image = function(image_id){
-        console.log('IMAGE_ID: '+image_id)
         for(key in $scope.images)
         {
-            console.log($scope.images[key].id)
             if ($scope.images[key].id == image_id)
                 return $scope.images[key]
         }
@@ -169,13 +194,13 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 			image = get_image(campaing_address.end_image)
 			campaing_address.end_image = 0
 		}
+        if (!image) return
+
 		update_object(angular.copy(campaing_address))
 		delete_object(angular.copy(image))
 		delete_from_array($scope.images,angular.copy(image))
-		// remove a image
-		// TODO:
 
-		var identifer = id+"-"+type
+		var identifer = address_id+"-"+type
 		// mostra os icones
 		$(".upload-"+identifer).removeClass('hidden')
 		// add edit and remove buttom	

@@ -25,16 +25,16 @@
 
 		<div class="form-group">
 		  <label for="select_city">Cidade Selecionada:</label>
-		<select class="form-control" name="select_city" id="select_city" ng-model="selected" ng-click="select_city()">
+          <select class="form-control" name="select_city" id="select_city" ng-disabled="cities.length == 0" ng-model="selected" ng-click="select_city()">
 		  <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
 		</select>
 		</div>
 
 		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="new_city()">Nova</button>
 
-		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="update_city()">Editar</button>
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="update_city()" ng-disabled="!selected ">Editar</button>
 
-		<button type="button" class="btn btn-info btn-lg" ng-click="remove_city()">Remover </button>
+		<button type="button" class="btn btn-info btn-lg" ng-disabled="!selected" ng-click="remove_city()">Remover </button>
 
 	</div> <!-- ENDS PULL_LEFT-->
 </div><!-- ENDS CONTROLLER CITY-->

@@ -1,6 +1,7 @@
 .left-bar {
     width: 30%;
     height: 100%;
+    padding-right: 70px;
 }
 .right-bar {
     width: 70%;
@@ -8,4 +9,11 @@
 body {
     margin: 0px;
     padding: 0px;
+}
+#btn-pdf {
+    font-size: 22px;
+    margin-top: 5px;
+}
+.btn {
+    margin-top: 5px;
 }
