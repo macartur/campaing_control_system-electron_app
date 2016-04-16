@@ -7,5 +7,5 @@
       "database": "electron"
   },
   "useNullAsDefault": true,
-  "debug": true
+  "debug": false
 }

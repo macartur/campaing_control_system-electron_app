@@ -45,8 +45,11 @@ ccs.controller('addressCtrl',['$scope', function($scope){
     }
 
     $scope.remove_address = function(index){
-       
        var address = $scope.selected_addresses[index]
+
+       if(! confirm("Tem certeza que deseja remover o Endereço \""+
+          address.name +"\" ?")) return 
+
        // delete from database
        delete_object(angular.copy(address))
         // remove from selected 

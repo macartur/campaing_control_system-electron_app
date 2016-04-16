@@ -10,11 +10,11 @@
       </div>
       <div class="modal-body">
 		<form novalidate class="simple-form">
-			Name: <input type="text" ng-model="campaing.name" /><br />
-  			Dia Inicial: <input type="date" ng-model="campaing.start_time">
-  			Dia Final:   <input type="date" ng-model="campaing.end_time">
-			<input type="submit" ng-show="mode === 'new'" ng-click="register_campaing()" value="Salvar" />
-            <input type="submit" ng-show="mode === 'edit'" ng-click="update_campaing()">
+			Name: <input type="text" ng-model="campaing.name" class="form-control" /><br />
+  			Dia Inicial: <input type="date" class="form-control" ng-model="campaing.start_time">
+  			Dia Final:   <input type="date" class="form-control" ng-model="campaing.end_time">
+			<input type="submit" class="btn btn-success" ng-show="mode === 'new'" ng-click="register_campaing()" value="Salvar" />
+            <input type="submit" class="btn btn-success" ng-show="mode === 'edit'" ng-click="update_campaing()">
 		</form>
       </div>
     </div>
@@ -22,28 +22,26 @@
 </div>
 
 <div>
-
     <h1>Campanha</h1>
 
     <select class="form-control" name="campaing_selected" id="campaing_selected" ng-disabled="!campaings.length" ng-model="campaing_selected.id" ng-click="select_campaing()"  >
-      <option   ng-repeat="option in campaings" value="{{option.id}}">{{option.name}}</option>
+      <option ng-repeat="option in campaings" value="{{option.id}}">{{option.name}}</option>
     </select>
 </div>
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#campaing_modal" ng-click="new_campaing()">Nova</button>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#campaing_modal" ng-click="new_campaing()">Nova</button>
 
-<button type="button" class="btn btn-info btn-lg" ng-disabled="!campaing_selected.campaing" data-toggle="modal" data-target="#campaing_modal" ng-click="edit_campaing()">Editar</button>
+<button type="button" class="btn btn-info" ng-disabled="!campaing_selected.campaing" data-toggle="modal" data-target="#campaing_modal" ng-click="edit_campaing()">Editar</button>
 
-<button type="button" ng-disabled="!campaing_selected.campaing"class="btn btn-info btn-lg" ng-click="remove_campaing()">Remover</button>
-
+<button type="button" ng-disabled="!campaing_selected.campaing"class="btn btn-danger" ng-click="remove_campaing()">Remover</button>
 
     <h1><center>Cidade<center></h1>
 
-    <select class="form-control" name="city_selected" id="city_selected" ng-disabled="!cities.length" ng-model="city_selected" ng-click="select_city()" >
+    <select class="form-control" name="city_selected" id="city_selected" ng-disabled="!cities.length || !campaing_selected.campaing" ng-model="city_selected" ng-click="select_city()" >
       <option ng-repeat="option in cities" value="{{option.id}}">{{option.name}}</option>
     </select>
 
-<button id="btn-pdf" type="button" class="btn btn-info btn-lg" ng-disabled="!campaing_selected.campaing" ng-click="get_directory()" >Gerar PDF</button>
+<button id="btn-pdf" type="button" class="btn btn-info btn-xs" ng-disabled="!campaing_selected.campaing" ng-click="get_directory()" >Gerar PDF</button>
 
 </div>
 

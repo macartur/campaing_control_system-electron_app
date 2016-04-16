@@ -11,7 +11,7 @@
 		  <div class="modal-body">
 			<form novalidate class="simple-form">
 				<label for="city_name" >Nome: </label>
-				<input name='city_name' ng-model="city.name" type="text">
+				<input name='city_name' class="form-control" ng-model="city.name" type="text">
 				<button class="btn btn-default" ng-show="mode === 'new'" ng-click="add_city()"> Criar </button>
 				<button class="btn btn-default" ng-show="mode === 'edit'"ng-click="edit_city()"> Editar </button>
 			</form>
@@ -30,11 +30,11 @@
 		</select>
 		</div>
 
-		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="new_city()">Nova</button>
+		<button type="button" class="btn btn-info" data-toggle="modal" data-target="#new_city" ng-click="new_city()">Nova</button>
 
-		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#new_city" ng-click="update_city()" ng-disabled="!selected ">Editar</button>
+		<button type="button" class="btn btn-info " data-toggle="modal" data-target="#new_city" ng-click="update_city()" ng-disabled="!selected ">Editar</button>
 
-		<button type="button" class="btn btn-info btn-lg" ng-disabled="!selected" ng-click="remove_city()">Remover </button>
+		<button type="button" class="btn btn-danger" ng-disabled="!selected" ng-click="remove_city()">Remover </button>
 
 	</div> <!-- ENDS PULL_LEFT-->
 </div><!-- ENDS CONTROLLER CITY-->

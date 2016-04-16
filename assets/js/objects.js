@@ -53,6 +53,7 @@ var campaing_schema = {
         table.date('end_time');
     }
 }
+
 var image_schema = {
     tableName: tables['ImageClass'],
     build: function(table){
@@ -79,14 +80,13 @@ var campaing_address_schema = {
     }
 }
 
-manager.sync([city_schema])
+manager.sync([city_schema,address_schema])
 manager.sync([address_schema])
 manager.sync([campaing_schema])
 manager.sync([campaing_address_schema])
 manager.sync([image_schema])
 
 // create a connection
-console.log('OBJECTS')
 // DATABASE CONFIGURATION
 var knex = require('knex')(data);
 
@@ -254,8 +254,7 @@ var last_id = function(array) {
 var delete_from_array = function(array,element_id)
 {
 	if (array.length > 0)
-		for(var key in array)
-		{
+		for(var key in array){
 			if(array[key].id == element_id)
 			array.splice(key,1)
 		}

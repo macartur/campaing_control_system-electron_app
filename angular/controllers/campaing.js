@@ -48,6 +48,9 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         var campaing = copy_campaing($scope.campaing_selected.campaing)
         var address_index = []
 
+        if(! confirm("Tem certeza que deseja remover a Campanha \""+
+           campaing.name+"\" ?")) return 
+
         for(var key in $scope.campaing_addresses)
         {
             console.log(key)
@@ -225,20 +228,24 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 
 			var current_image = new ImageClass(last_id($scope.images),
                                           current_file.name,
-									      new_path+current_file.name)
+									      new_path+current_file.name,
+                                          $scope.image_box.x,
+                                          $scope.image_box.y,
+                                          $scope.image_box.w,
+                                          $scope.image_box.h)
 
 			save_object(current_image)
 			$scope.images.push(angular.copy(current_image))
 			copy_file(path, new_path+current_file.name)
 
-			if (type.includes('start_image'))
-			{
+			if (type.includes('start_image')){
 				campaing_address.start_image = current_image.id
 			}else if (type.includes('end_image')){
 				campaing_address.end_image = current_image.id
 			}
 		    console.log(campaing_address.start_image)
 			update_object(angular.copy(campaing_address))
+
 			// hide the current DOM and show edit and remove buttons
 			// remove upload buttom
 			var identifer = id+"-"+type
@@ -273,7 +280,9 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         else if(type.includes('end_image'))
             image = $scope.get_end_image(address_id)
 
-		var img_tag =  $("<img id='image_target' src="+image.url+">")
+		var img_tag =  $("<img id='image_target' src="+image.url+
+                         " width="+$scope.image_box.w*2+"px"+
+                         " height="+ $scope.image_box.h*2+">")
 		img_tag.attr('name',address_id+"-"+type)
 		console.log(img_tag)
 		container.append(img_tag)
