@@ -9,10 +9,40 @@
         <h4 class="modal-title" ng-show="mode === 'edit'">Editar Campanha</h4>
       </div>
       <div class="modal-body">
-		<form novalidate class="simple-form">
+		<form novalidate >
 			Name: <input type="text" ng-model="campaing.name" class="form-control" /><br />
-  			Dia Inicial: <input type="date" class="form-control" ng-model="campaing.start_time">
-  			Dia Final:   <input type="date" class="form-control" ng-model="campaing.end_time">
+
+              Dia Inicial:
+			  <div class="input-append date datepicker">
+				<input type="date"  ng-model="campaing.start_time" >
+				<span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+			  </div>
+
+              Dia Final:
+			  <div class="input-append date datepicker">
+				<input type="date"  ng-model="campaing.end_time" >
+				<span class="add-on"><i class="glyphicon glyphicon-calendar"></i>
+				</span>
+			  </div>
+
+			<script>
+			$.fn.datepicker.dates['pt'] = {
+				days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+				daysShort: ["Dom", "Seg", "Ter", "Qua", "Qyu", "Sex", "Sab"],
+				daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
+				months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+				monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Aug", "Set", "Out", "Nov", "Dec"],
+				today: "Hoje",
+				clear: "Apagar",
+				format: "yyyy-mm-dd",
+				titleFormat: "MM yyyy",
+				weekStart: 0
+			};
+
+			$('.datepicker').datepicker({
+				language: 'pt',
+			});
+			</script>
 			<input type="submit" class="btn btn-success" ng-show="mode === 'new'" ng-click="register_campaing()" value="Salvar" />
             <input type="submit" class="btn btn-success" ng-show="mode === 'edit'" ng-click="update_campaing()" value="Editar">
 		</form>
@@ -20,6 +50,7 @@
     </div>
   </div>
 </div>
+
 
 <div>
     <h1>Campanha</h1>
