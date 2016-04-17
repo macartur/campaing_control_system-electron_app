@@ -22,6 +22,7 @@ ccs.controller('cityCtrl',['$rootScope','$scope', function($rootScope,$scope){
 	}
     $scope.edit_city = function(){
         update_object(angular.copy($scope.city))    
+        $('.close').click()
     }
 
 	$scope.new_city = function(){
@@ -32,6 +33,7 @@ ccs.controller('cityCtrl',['$rootScope','$scope', function($rootScope,$scope){
         var new_city = new City(last_id($scope.cities),$scope.city.name)    
         save_object(angular.copy(new_city))
         $scope.cities.push(new_city)
+        $('.close').click()
     }
 
 	$scope.remove_city = function(){

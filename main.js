@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = false
+var debug = true
 const electron =  require('electron');
 const app = electron.app;
 

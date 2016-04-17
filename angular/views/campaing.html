@@ -14,7 +14,7 @@
   			Dia Inicial: <input type="date" class="form-control" ng-model="campaing.start_time">
   			Dia Final:   <input type="date" class="form-control" ng-model="campaing.end_time">
 			<input type="submit" class="btn btn-success" ng-show="mode === 'new'" ng-click="register_campaing()" value="Salvar" />
-            <input type="submit" class="btn btn-success" ng-show="mode === 'edit'" ng-click="update_campaing()">
+            <input type="submit" class="btn btn-success" ng-show="mode === 'edit'" ng-click="update_campaing()" value="Editar">
 		</form>
       </div>
     </div>
@@ -116,7 +116,7 @@
         <input type="text" value="0" id="w">
         <input type="text" value="0" id="h">
         </div>
-        <button ng-click="save_image()"> salvar </button>
+        <button ng-click="save_image()"> Salvar </button>
       </div>
     </div>
   </div>

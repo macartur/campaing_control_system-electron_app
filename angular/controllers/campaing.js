@@ -19,10 +19,12 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         campaing.id = last_id($scope.campaings)
         save_object(angular.copy(campaing))
         $scope.campaings.push(campaing)
+        $('.close').click()
     }
 
     $scope.update_campaing = function(){
        update_object(copy_campaing($scope.campaing_selected.campaing))
+       $('.close').click()
     }
 
     var copy_campaing = function(campaing){
@@ -255,6 +257,9 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 			$(".edit-"+identifer).removeClass('ng-hide')
 			$(".remove-"+identifer).removeClass('hidden')
 			$(".remove-"+identifer).removeClass('ng-hide')
+
+            // open edit modal
+            $('.edit-'+identifer).get(0).click()
 		}
 	}
 
@@ -309,6 +314,9 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
         image.h = coords.h
         update_object(image)
         create_file_from_canvas(image.url,coords)
+
+        // close modal
+        $('.close').click()
     }
 
     $scope.get_directory = function(){
@@ -329,8 +337,8 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
                 if(key > 0)doc.addPage();
                 var line = array[0][key]
 
-                doc.fontSize(28)
-                .text(line.city,230,100)
+                doc.fontSize(18)
+                .text(line.city,80,100)
 
                 // monitor e datas
                 doc.rect(80,160,400,30).stroke()
@@ -339,9 +347,6 @@ ccs.controller('campaingCtrl',['$scope', function($scope){
 
                 // data inicial
                 var data_inicial = $scope.campaing_selected.campaing.start_time 
-                console.log(data_inicial)
-
-                console.log(data_inicial.getMonth())
 
 				var dateString1 = data_inicial.getDate() + "/" +
                                  (data_inicial.getMonth()+1)+"/"+

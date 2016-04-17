@@ -16,7 +16,7 @@ var fs = require('fs');
 var data;
 // read from json file
 try {
-    data = fs.readFileSync(__dirname+"/database.json",'ascii')
+    data = fs.readFileSync(__dirname+"/database.json",'utf8')
     data = JSON.parse(data)
 } catch (err){
     console.error("There was an error opening the file:")
@@ -80,11 +80,37 @@ var campaing_address_schema = {
     }
 }
 
-manager.sync([city_schema,address_schema])
-manager.sync([address_schema])
-manager.sync([campaing_schema])
-manager.sync([campaing_address_schema])
-manager.sync([image_schema])
+if (data.create_tables == true)
+{
+    manager.sync([city_schema])
+    manager.sync([address_schema])
+    manager.sync([campaing_schema])
+    manager.sync([campaing_address_schema])
+    manager.sync([image_schema])
+}
+
+// populate
+var seed;
+try {
+    seed = fs.readFileSync(__dirname+"/seed.json",'utf8')
+    seed = JSON.parse(seed)
+} catch (err){
+    console.error("There was an error opening the file:")
+    console.error(err)
+}
+
+
+if(data.populate == true){
+    city_schema.populate = function(database){
+        return  knex(tables['City']).insert(seed.cities);
+    }
+    manager.populate([city_schema])
+
+    address_schema.populate = function(database){
+        return knex(tables['Address']).insert(seed.addresses); 
+    }
+    manager.populate([address_schema])
+}
 
 // create a connection
 // DATABASE CONFIGURATION
